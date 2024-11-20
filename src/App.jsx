@@ -8,12 +8,8 @@ const MAX_HEX = 255;
  * generates three random decimal numbers less than MAX_HEX, and then get's converted to the HEX decimal to represent a color
  */
 function generateBackgroundColor() {
-  const first = Math.floor(Math.random() * MAX_HEX);
-  const second = Math.floor(Math.random() * MAX_HEX);
-  const third = Math.floor(Math.random() * MAX_HEX);
-  return `#${convertDecToHex(first)}${convertDecToHex(second)}${convertDecToHex(
-    third
-  )}`;
+  const randomNumber = () => Math.floor(Math.random() * MAX_HEX);
+  return `#${convertDecToHex(randomNumber())}${convertDecToHex(randomNumber())}${convertDecToHex(randomNumber())}`;
 }
 
 function convertDecToHex(dec) {
@@ -26,8 +22,7 @@ function convertDecToHex(dec) {
   if (first > 9) {
     first = String.fromCharCode(96 + first - 9);
   }
-  const color = `${first}${last}`;
-  return color;
+  return `${first}${last}`;
 }
 
 export default function App() {
@@ -38,11 +33,7 @@ export default function App() {
 
   return (
     <>
-      <div
-        id="guess-color"
-        style={{ backgroundColor: color }}
-        onClick={handleColor}
-      ></div>
+      <div id="guess-color" style={{ backgroundColor: color }} onClick={handleColor}></div>
       <i>click to change the color</i>
     </>
   );
