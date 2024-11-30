@@ -1,5 +1,30 @@
 #guess-color {
   width : 600px;
   height : 400px;
-  /* background-color: black; */
+}
+
+#guess-buttons {
+  display:flex;
+  margin-top: 10px;
+}
+
+button{
+  background-color: pink;
+  border: 2px solid #04AA6D;
+  margin-left: 20px;
+  margin-right: 30px;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 4px;
+}
+
+button:hover {
+  background-color: #04AA6D; /* Green */
+  color: white;
+}
+button {
+  transition-duration: 0.4s;
 }

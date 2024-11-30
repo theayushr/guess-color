@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Button from "./Button";
 import "./App.css";
 
 const HEX_BASE = 16;
@@ -8,8 +9,8 @@ const MAX_HEX = 255;
  * generates three random decimal numbers less than MAX_HEX, and then get's converted to the HEX decimal to represent a color
  */
 function generateBackgroundColor() {
-  const randomNumber = () => Math.floor(Math.random() * MAX_HEX);
-  return `#${convertDecToHex(randomNumber())}${convertDecToHex(randomNumber())}${convertDecToHex(randomNumber())}`;
+  const primaryColor = () => convertDecToHex(Math.floor(Math.random() * MAX_HEX));
+  return `#${primaryColor()}${primaryColor()}${primaryColor()}`;
 }
 
 function convertDecToHex(dec) {
@@ -31,10 +32,17 @@ export default function App() {
     setColor(generateBackgroundColor());
   }
 
+  let colors = [color, generateBackgroundColor(), generateBackgroundColor()].sort(() => 0.5 - Math.random());
+
   return (
     <>
       <div id="guess-color" style={{ backgroundColor: color }} onClick={handleColor}></div>
       <i>click to change the color</i>
+      <div id="guess-buttons">
+        <Button name={colors[0]}></Button>
+        <Button name={colors[1]}></Button>
+        <Button name={colors[2]}></Button>
+      </div>
     </>
   );
 }
