@@ -1,11 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Button from "./Button";
 import "./App.css";
 
 const HEX_BASE = 16;
 const MAX_HEX = 255;
 
-const RIGHT = "right-guess", WRONG = "wrong-guess", NOT_RESPONDED = "not-responded";
+const RIGHT = "right-guess",
+  WRONG = "wrong-guess",
+  NOT_RESPONDED = "not-responded";
 
 /**
  * generates three random decimal numbers less than MAX_HEX, and then get's converted to the HEX decimal to represent a color
@@ -28,34 +30,47 @@ function convertDecToHex(dec) {
   return `${first}${last}`;
 }
 
+// Fisher-Yates Shuffle
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
 export default function App() {
   const [color, setColor] = useState(generateBackgroundColor());
   const [answerStatus, setAnswerStatus] = useState(NOT_RESPONDED);
+  const [btnColors, setBtnColors] = useState(
+    shuffleArray([color, generateBackgroundColor(), generateBackgroundColor()])
+  );
+
   function handleColor() {
-    setColor(generateBackgroundColor());
+    const newColor = generateBackgroundColor();
+    setColor(newColor);
+    setBtnColors(shuffleArray([newColor, generateBackgroundColor(), generateBackgroundColor()]));
+    setAnswerStatus(NOT_RESPONDED);
   }
 
-  function handleButtonClick({guessedColor}) {
+  function handleButtonClick({ guessedColor }) {
     if (guessedColor === color) {
       setAnswerStatus(RIGHT);
-      console.log("Right color guessed");
     } else {
       setAnswerStatus(WRONG);
-      console.log("Wrong color guessed");
     }
   }
-
-  let colors = [color, generateBackgroundColor(), generateBackgroundColor()].sort(() => 0.5 - Math.random());
 
   return (
     <>
       <div id="guess-color" style={{ backgroundColor: color }} onClick={handleColor}></div>
       <i>click to change the color</i>
       <div id="guess-buttons">
-        <Button colorName={colors[0]} handleClick={handleButtonClick}></Button>
-        <Button colorName={colors[1]} handleClick={handleButtonClick}></Button>
-        <Button colorName={colors[2]} handleClick={handleButtonClick}></Button>
+        <Button colorName={btnColors[0]} handleClick={handleButtonClick}></Button>
+        <Button colorName={btnColors[1]} handleClick={handleButtonClick}></Button>
+        <Button colorName={btnColors[2]} handleClick={handleButtonClick}></Button>
       </div>
+      <h3 id="result">{answerStatus === RIGHT ? "Right Answer" : answerStatus === WRONG ? "Wrong Answer" : ""} </h3>
     </>
   );
 }
