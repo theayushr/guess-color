@@ -1,3 +1,6 @@
-export default function Button({name}) {
-  return <button>{name}</button>;
+import React from "react"
+
+export default function Button({colorName, handleClick}) {
+  return (
+  <button onClick = { () => handleClick({guessedColor : colorName})}>{colorName}</button>)
 }

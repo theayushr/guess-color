@@ -5,6 +5,8 @@ import "./App.css";
 const HEX_BASE = 16;
 const MAX_HEX = 255;
 
+const RIGHT = "right-guess", WRONG = "wrong-guess", NOT_RESPONDED = "not-responded";
+
 /**
  * generates three random decimal numbers less than MAX_HEX, and then get's converted to the HEX decimal to represent a color
  */
@@ -28,8 +30,19 @@ function convertDecToHex(dec) {
 
 export default function App() {
   const [color, setColor] = useState(generateBackgroundColor());
+  const [answerStatus, setAnswerStatus] = useState(NOT_RESPONDED);
   function handleColor() {
     setColor(generateBackgroundColor());
+  }
+
+  function handleButtonClick({guessedColor}) {
+    if (guessedColor === color) {
+      setAnswerStatus(RIGHT);
+      console.log("Right color guessed");
+    } else {
+      setAnswerStatus(WRONG);
+      console.log("Wrong color guessed");
+    }
   }
 
   let colors = [color, generateBackgroundColor(), generateBackgroundColor()].sort(() => 0.5 - Math.random());
@@ -39,9 +52,9 @@ export default function App() {
       <div id="guess-color" style={{ backgroundColor: color }} onClick={handleColor}></div>
       <i>click to change the color</i>
       <div id="guess-buttons">
-        <Button name={colors[0]}></Button>
-        <Button name={colors[1]}></Button>
-        <Button name={colors[2]}></Button>
+        <Button colorName={colors[0]} handleClick={handleButtonClick}></Button>
+        <Button colorName={colors[1]} handleClick={handleButtonClick}></Button>
+        <Button colorName={colors[2]} handleClick={handleButtonClick}></Button>
       </div>
     </>
   );
